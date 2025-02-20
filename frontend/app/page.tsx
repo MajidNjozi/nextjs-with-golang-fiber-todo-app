@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import Task from '@/components/ui/task';
@@ -9,25 +12,32 @@ interface TaskType {
   done: boolean;
 }
 
-async function getTasks(): Promise<TaskType[]> {
-  try {
-    const res = await fetch('http://127.0.0.1:8000/api/task', {
-      cache: 'no-store', // Avoid caching in development
-    });
+export default function Home() {
+  const [tasks, setTasks] = useState<TaskType[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    if (!res.ok) {
-      throw new Error('Failed to fetch tasks');
+  useEffect(() => {
+    async function fetchTasks() {
+      try {
+        const res = await fetch('http://localhost:8080/api/tasks', {
+          cache: 'no-store', // Avoid caching in development
+        });
+
+        if (!res.ok) {
+          throw new Error('Failed to fetch tasks');
+        }
+
+        const data = await res.json();
+        setTasks(data);
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      } finally {
+        setLoading(false);
+      }
     }
 
-    return res.json();
-  } catch (error) {
-    console.error('Error fetching tasks:', error);
-    return [];
-  }
-}
-
-export default async function Home() {
-  const tasks = await getTasks();
+    fetchTasks();
+  }, []); // Runs only once on component mount
 
   return (
     <section className="flex flex-col items-center justify-center min-h-screen py-2 bg-white mx-auto max-w-2xl">
@@ -52,12 +62,20 @@ export default async function Home() {
         Today is: {new Date().toDateString()}
       </p>
 
-      {tasks.length === 0 ? (
+      {loading ? (
+        <p className="text-gray-500">Loading tasks...</p>
+      ) : tasks.length === 0 ? (
         <p className="text-gray-500">No tasks found.</p>
       ) : (
         <div className="flex flex-col gap-2 w-full">
           {tasks.map((task) => (
-            <Task key={task.id} title={task.title} done={task.done} />
+            <Task
+              key={task.id}
+              id={task.id}
+              title={task.title}
+              description={task.description}
+              done={task.done}
+            />
           ))}
         </div>
       )}
