@@ -1,0 +1,53 @@
+# Node.js (Frontend)
+frontend/node_modules/
+frontend/.next/
+frontend/.vercel/
+frontend/.turbo/
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.production.local
+frontend/.env.test.local
+frontend/.eslintcache
+frontend/yarn.lock
+frontend/package-lock.json
+
+# Golang (Backend)
+backend/bin/
+backend/pkg/
+backend/vendor/
+backend/go.sum
+backend/go.mod
+backend/.env
+backend/.DS_Store
+backend/.idea/
+backend/.vscode/
+backend/*.exe
+backend/*.out
+backend/*.log
+backend/tmp/
+
+# SQLite Database
+database/*.db
+database/*.sqlite
+database/*.sqlite3
+database/*.db-wal
+database/*.db-shm
+
+# System Files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+.vscode

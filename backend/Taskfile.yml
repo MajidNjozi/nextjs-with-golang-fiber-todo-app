@@ -1,0 +1,13 @@
+#this helps run the app and look for changes
+version: '3'
+
+tasks:
+  dev:
+    dir: '{{.USER_WORKING_DIR}}'
+    sources:
+      - '**/*.go'
+    cmds:
+      - go build -o app && ./app
+# from your working directory, RUN : task -w dev'
+# install task if you don't have it : sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d
+#https://taskfile.dev/installation/
