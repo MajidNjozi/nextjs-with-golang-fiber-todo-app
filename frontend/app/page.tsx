@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+// import { Input } from '@/components/ui/input';
+// import { Button } from '@/components/ui/button';
 import Task from '@/components/ui/task';
+import TaskForm from '@/components/ui/taskform';
 
 interface TaskType {
   id: number;
@@ -35,7 +36,6 @@ export default function Home() {
         setLoading(false);
       }
     }
-
     fetchTasks();
   }, []); // Runs only once on component mount
 
@@ -53,10 +53,21 @@ export default function Home() {
         Manage your Tasks
       </h2>
       <br />
-      <section className="flex w-full max-w-sm items-center space-x-2">
-        <Input type="text" placeholder="What needs to be done?" />
-        <Button type="submit">Record</Button>
-      </section>
+      {/* <Form
+        action="/search"
+        className="flex flex-col gap-2 w-full max-w-sm items-center"
+      >
+        <Input type="text" placeholder="Title?" />
+        <Input type="text" placeholder="Description?" />
+        <Button
+          className="bg-zinc-900 text-white hover:bg-zinc-900 hover:font-medium hover:text-white"
+          type="submit"
+        >
+          Record
+        </Button>
+      </Form> */}
+      <TaskForm />
+
       <br className="my-4" />
       <p className="text-sm text-muted-foreground my-4">
         Today is: {new Date().toDateString()}
@@ -71,7 +82,7 @@ export default function Home() {
           {tasks.map((task) => (
             <Task
               key={task.id}
-              id={task.id}
+              id={tasks.indexOf(task) + 1}
               title={task.title}
               description={task.description}
               done={task.done}

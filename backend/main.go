@@ -13,9 +13,10 @@ func main() {
 	database.ConnectDB()
 
 	appConfig := fiber.Config{
-		Immutable:     true,
-		CaseSensitive: false,
-		StrictRouting: false,
+		Immutable:         true,
+		CaseSensitive:     false,
+		StrictRouting:     false,
+		EnablePrintRoutes: true,
 	}
 
 	app := fiber.New(appConfig)
@@ -29,10 +30,10 @@ func main() {
 		return c.SendString("Welcome to TO DO APP APIs")
 	})
 
-	app.Get("/api/tasks", routes.GetAllTasks)
-	app.Post("/api/task", routes.CreateTask)
-	app.Put("/api/task", routes.UpdateTask)
-	app.Delete("/api/task/:id<int>", routes.DeleteTask)
+	app.Get("/api/tasks", routes.GetAllTasks).Name("Get All Tasks")
+	app.Post("/api/task", routes.CreateTask).Name("Create task")
+	app.Put("/api/task", routes.UpdateTask).Name("Uodate Task")
+	app.Delete("/api/task/:id<int>", routes.DeleteTask).Name("Delete Task")
 
 	app.Listen(":8080")
 }
