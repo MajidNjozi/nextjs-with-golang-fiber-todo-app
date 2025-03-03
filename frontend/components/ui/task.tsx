@@ -1,4 +1,4 @@
-import { CircleCheck, Trash2 } from 'lucide-react';
+import { CircleCheck, PenBox, Trash2 } from 'lucide-react';
 
 interface TaskProps {
   id: number;
@@ -9,7 +9,7 @@ interface TaskProps {
 
 export default function Task({ id, title, description, done }: TaskProps) {
   return (
-    <section className="flex p-3 w-[600px] border border-black justify-between">
+    <section className="flex p-3 w-[680px] border border-black justify-between">
       <p className="font-black">{id}</p>
       <div>
         <p
@@ -19,11 +19,20 @@ export default function Task({ id, title, description, done }: TaskProps) {
         >
           {title}
         </p>
-        <p className="mx-2 w-[400px] text-gray-500">{description}</p>
+        <p
+          className={`mx-2 w-[400px] ${
+            done ? 'line-through text-gray-500' : ''
+          }`}
+        >
+          {description}
+        </p>
       </div>
       <div className="flex gap-2">
         <button>
-          <CircleCheck className={done ? 'text-green-500' : 'text-gray-500'} />
+          <CircleCheck className={done ? 'text-green-600' : 'text-gray-500'} />
+        </button>
+        <button>
+          <PenBox className="text-zinc-500" />
         </button>
         <button>
           <Trash2 className="text-red-500" />

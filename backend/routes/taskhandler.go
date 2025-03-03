@@ -9,21 +9,21 @@ import (
 
 // GetAllTasks fetches all tasks from the database
 func GetAllTasks(c *fiber.Ctx) error {
-    var tasks []models.Task
+	var tasks []models.Task
 
-    // Fetch all tasks
-    result := database.Database.Find(&tasks)
-	if result.Error!= nil{
+	// Fetch all tasks
+	result := database.Database.Find(&tasks)
+	if result.Error != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Failed to fetch tasks",
 		})
 	}
 
-    return c.JSON(tasks)
+	return c.JSON(tasks)
 
 }
 
-func CreateTask(c *fiber.Ctx) error{
+func CreateTask(c *fiber.Ctx) error {
 	var task models.Task
 	if err := c.BodyParser(&task); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -33,17 +33,17 @@ func CreateTask(c *fiber.Ctx) error{
 
 	// Save task to database
 	result := database.Database.Create(&task)
-	if result.Error!= nil{
+	if result.Error != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Failed to create task",
 		})
 	}
 
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
-		"id": task.ID,
-		"title": task.Title,
+		"id":          task.ID,
+		"title":       task.Title,
 		"description": task.Description,
-		"done": task.Done,
+		"done":        task.Done,
 	})
 }
 

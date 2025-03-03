@@ -76,7 +76,9 @@ export default function Home() {
       {loading ? (
         <p className="text-gray-500">Loading tasks...</p>
       ) : tasks.length === 0 ? (
-        <p className="text-gray-500">No tasks found.</p>
+        <div className="bg-zinc-500">
+          <p className="text-gray-500">No tasks found.</p>
+        </div>
       ) : (
         <div className="flex flex-col gap-2 w-full">
           {tasks.map((task) => (
