@@ -1,10 +1,13 @@
 package routes
 
 import (
+	"errors"
 	"go-to-do-app/database"
 	"go-to-do-app/models"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
 // GetAllTasks fetches all tasks from the database
@@ -97,5 +100,45 @@ func DeleteTask(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"message": "Task deleted successfully",
+	})
+}
+
+func MarkTaskAsDone(c *fiber.Ctx) error {
+	taskID := c.Params("id")
+
+	// Ensure taskID is a valid integer
+	id, err := strconv.Atoi(taskID)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Invalid task ID",
+		})
+	}
+
+	// Try fetching the task
+	var task models.Task
+	if err := database.Database.First(&task, id).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+				"error": "Task not found",
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to retrieve task",
+		})
+	}
+
+	// Toggle the task's done status
+	task.Done = !task.Done
+
+	// Save the updated task
+	if err := database.Database.Save(&task).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to update task",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Task updated successfully",
+		"done":    task.Done, // Return the new status
 	})
 }

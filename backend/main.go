@@ -32,6 +32,7 @@ func main() {
 
 	app.Get("/api/tasks", routes.GetAllTasks).Name("Get All Tasks")
 	app.Post("/api/task", routes.CreateTask).Name("Create task")
+	app.Put("/api/task/:id<int>", routes.MarkTaskAsDone).Name("Update Task Mark as Done")
 	app.Put("/api/task/:id<int>", routes.UpdateTask).Name("Update Task")
 	app.Delete("/api/task/:id<int>", routes.DeleteTask).Name("Delete Task")
 
